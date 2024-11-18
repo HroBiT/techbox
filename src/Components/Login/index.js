@@ -12,7 +12,7 @@ function Login() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/cart');
+      navigate('/');
     } catch (error) {
       console.error("Error logging in: ", error);
     }

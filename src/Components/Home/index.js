@@ -1,34 +1,38 @@
-import React from 'react';
-import Navbar from '../../NavBar/NavBar';
+import React, { useEffect, useState } from 'react';
+import Navbar from '../NavBar/NavBar';
 import Card from '../Card';
+import Cart from '../Cart';
+import { auth, db } from '../firebase';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 function Home() {
-  const cardsData = [
-    {
-      Nazwa: "G4M3R HERO PLUS R7-7800X3D",
-      Cena: 13500,
-      Specyfikacja: "AMD Ryzen 7 7800X3D, NVIDIA RTX 4080, 64GB RAM",
-      Image: "kobieta.jpg", 
-    },
-    {
-      Nazwa: "Silver Monkey X Battlestation",
-      Cena: 4200,
-      Specyfikacja: "Intel Core i5-12400F, NVIDIA RTX 4060 Ti, 16GB RAM",
-      Image: "kobieta.jpg",
-    },
-    {
-      Nazwa: "Acer Nitro 50",
-      Cena: 4699,
-      Specyfikacja: "AMD Ryzen 5 7600, Radeon RX 7600, 32GB RAM",
-      Image: "kobieta.jpg", 
-    },
-    {
-      Nazwa: "Lenovo Legion T5",
-      Cena: 5099,
-      Specyfikacja: "Intel Core i5-14400F, NVIDIA RTX 4060, 32GB RAM",
-      Image: "kobieta.jpg",
-    },
-  ];
+  const [cardsData, setCardsData] = useState([]);
+
+  useEffect(() => {
+    const fetchCardsData = async () => {
+      const cardsCollection = collection(db, 'cards');
+      const cardsSnapshot = await getDocs(cardsCollection);
+      const cardsList = cardsSnapshot.docs.map(doc => doc.data());
+      setCardsData(cardsList);
+    };
+
+    fetchCardsData();
+  }, []);
+
+  const addToCart = async (product) => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        const cartRef = collection(db, 'carts', user.uid, 'items');
+        const docRef = await addDoc(cartRef, product);
+        console.log("Product added to cart:", product);
+      } catch (error) {
+        console.error("Error adding product to cart:", error);
+      }
+    } else {
+      console.log("User is not authenticated");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -42,6 +46,7 @@ function Home() {
               Cena={card.Cena}
               Specyfikacja={card.Specyfikacja}
               Image={card.Image}
+              addToCart={addToCart}
             />
           ))}
         </div>
