@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../NavBar/NavBar';
 import Card from '../Card';
-import Cart from '../Cart';
 import { auth, db } from '../firebase';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 
@@ -36,7 +34,6 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
       <div className="p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {cardsData.map((card, index) => (

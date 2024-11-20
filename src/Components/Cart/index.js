@@ -35,13 +35,13 @@ function Cart() {
   };
 
   return (
-    <div>
-      <h2>Cart</h2>
-      <ul>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Cart</h2>
+      <ul className="list-none p-0">
         {cart.map((item, index) => (
-          <li key={index}>
-            {item.Nazwa} - {item.Cena} PLN
-            <button onClick={() => removeFromCart(item.id)}>Remove</button>
+          <li className="border rounded-xl p-5 m-4 flex justify-between items-center" key={index}>
+            <span>{item.Nazwa} - {item.Cena} PLN</span>
+            <button className="bg-red-600 text-white p-2 rounded-xl hover:bg-red-700" onClick={() => removeFromCart(item.id)}>Remove</button>
           </li>
         ))}
       </ul>

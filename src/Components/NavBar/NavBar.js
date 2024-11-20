@@ -27,7 +27,7 @@ function Navbar() {
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between">
-        <div className="text-white text-lg font-bold">TechBox</div>
+        <Link to="/" ><div className="text-white text-lg font-bold">TechBox</div></Link>
         <div>
           {user ? (
             <>
